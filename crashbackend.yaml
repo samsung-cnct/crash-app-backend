@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: crashbackend
+    labels:
+        app: crashbackend 
+spec:
+    restartPolicy: Never
+    containers:
+      - name: crashbackend
+        image: quay.io/oneilcin/crashbackend:0.0.2
+        ports:
+        - containerPort: 8081
+#        command:
+#          - ./crashbackend
+#          - version
+        imagePullPolicy: Always
+        env:
+          - name: ELASTICSEARCH_TARGET_URL
+            #value: "http://192.168.99.100:30440"
+            #value: "http://cindyelasticsearch.default:9200/krakencrashreporter/krackencrashes"
+            value: "http://cindyelasticsearch.default:9200"

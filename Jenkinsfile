@@ -7,13 +7,13 @@
 //
 // Configuration variables
 github_org             = "oneilcin"
-quay_org               = "oneilcin"
-quay_push_org          = "oneilcin"
+quay_org               = "samsung-cnct"
+quay_push_org          = "samsung-cnct"
 //quay_push_org          = "samsung_cnct"
 golang_project_name    = "crash-app-backend"
 golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"
 
-podTemplate(label: "${golang_project_name}", containers: [
+podTemplate(label: "crash-app-backend", containers: [
     containerTemplate(name: 'jnlp', image: "quay.io/${quay_org}/custom-jnlp:0.1", args: '${computer.jnlpmac} ${computer.name}'),
     containerTemplate(name: 'goglide', image: "quay.io/${quay_org}/goglide:1.8.3", ttyEnabled: true, command: 'cat' ),
     containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
@@ -23,7 +23,7 @@ podTemplate(label: "${golang_project_name}", containers: [
     // The Following is needed to push to quay
     secretVolume(mountPath: '/home/jenkins/.docker/', secretName: 'samsung-cnct-quay-robot-dockercfg')
   ]) {
-    node("${golang_project_name}") {
+    node("crash-app-backend") {
         customContainer('goglide') {
               // NOTE: the current WORKSPACE is the correct value for the GOPATH, we will use that in later steps
               //       We will put the go project in the correct location relative to our WORKSPACE (i.e. GOPATH)

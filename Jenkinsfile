@@ -7,8 +7,8 @@
 //
 // Configuration variables
 github_org             = "oneilcin"
-quay_org               = "samsung-cnct"
-quay_push_org          = "samsung-cnct"
+quay_org               = "samsung_cnct"
+quay_push_org          = "samsung_cnct"
 //quay_push_org          = "samsung_cnct"
 golang_project_name    = "crash-app-backend"
 golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"

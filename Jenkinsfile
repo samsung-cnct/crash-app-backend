@@ -115,7 +115,6 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // NOTE: the docker CLI client should still be in our env.
-                  /*
                   stage('push') {
                       kubesh(" \
                           docker version; \
@@ -123,7 +122,7 @@ podTemplate(label: "crash-app-backend", containers: [
                           make --no-builtin-rules push; \
                        ")
                   }
-                  */
+                  /*
                   stage('push') {
                       kubesh(" \
                           docker version; \
@@ -131,6 +130,7 @@ podTemplate(label: "crash-app-backend", containers: [
                           docker push quay.io/${quay_push_org}/${image_name}:${image_tag}; \
                        ")
                   }
+                  */
 //            stage('Publish') {
 //              if (env.BRANCH_NAME == "master" && git_uri.contains(github_org)) {
 //                kubesh "docker tag k2-tools:${env.JOB_BASE_NAME}.${env.BUILD_ID} quay.io/${quay_org}/k2-tools:latest"

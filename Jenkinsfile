@@ -82,24 +82,23 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   */
-                  // build the complete app (make puts the output into the correct location for the container build)
-                   stage('build') {
-                      kubesh(" \
-                          export GOPATH=${WORKSPACE}; \
-                          export PATH=\$GOPATH/bin:\$PATH; \
-                          cd crash-app-backend; \
-                          make --no-builtin-rules --file make.golang build-app; \
-                       ")
-                  }
                   stage('unit-test') {
                       kubesh(" \
                           export GOPATH=${WORKSPACE}; \
                           export PATH=\$GOPATH/bin:\$PATH; \
                           cd crash-app-backend; \
                           make --no-builtin-rules --file make.golang test; \
-                          sleep 600; \
                        ")
                   }
+                  // build the complete app (make puts the output into the correct location for the container build)
+                  stage('build') {
+                      kubesh(" \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          cd crash-app-backend; \
+                          make --no-builtin-rules --file make.golang build-app; \
+                       ")
+                  }       
                   //
                   // NOTE: we have to install a docker CLI client into our env to do this.
                   stage('add-docker') {

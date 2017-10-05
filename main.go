@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/samsung-cnct/crash-app-backend/cmd"
+	"github.com/oneilcin/crash-app-backend/cmd"
 )
 
 func main() {

@@ -8,7 +8,7 @@
 // Configuration variables
 github_org             = "oneilcin"
 quay_org               = "samsung_cnct"
-quay_push_org          = "samsung_cnct"
+quay_push_org          = "oneilcin"
 image_name             = "crashbackend"
 image_tag              = "0.0.2"
 //quay_push_org          = "samsung_cnct"

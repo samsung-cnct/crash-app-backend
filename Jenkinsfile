@@ -72,16 +72,6 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // In golang we Unit test before we build the complete app
-                  /*
-                  stage('unit-test') {
-                      kubesh(" \
-                          export GOPATH=${WORKSPACE}; \
-                          export PATH=\$GOPATH/bin:\$PATH; \
-                          cd crash-app-backend; \
-                          make test-backendproxy; \
-                       ")
-                  }
-                  */
                   stage('unit-test') {
                       kubesh(" \
                           export GOPATH=${WORKSPACE}; \
@@ -114,16 +104,6 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // NOTE: the docker CLI client should still be in our env.
-                  /*
-                  stage('containerize') {
-                      kubesh(" \
-                          cd crash-app-backend/_containerize; \
-                          docker version; \
-                          export DOCKER_REPO=quay.io/${quay_push_org}; \
-                          make --no-builtin-rules all; \
-                       ")
-                  }
-                  */
                   stage('containerize') {
                       kubesh(" \
                           cd _containerize; \
@@ -135,7 +115,6 @@ podTemplate(label: "crash-app-backend", containers: [
                   // NOTE: the docker CLI client should still be in our env.
                   stage('push') {
                       kubesh(" \
-                          cd crash-app-backend/_containerize; \
                           docker version; \
                           export DOCKER_REPO=quay.io/${quay_push_org}; \
                           make --no-builtin-rules push; \

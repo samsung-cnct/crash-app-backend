@@ -114,9 +114,19 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // NOTE: the docker CLI client should still be in our env.
+                  /*
                   stage('containerize') {
                       kubesh(" \
                           cd crash-app-backend/_containerize; \
+                          docker version; \
+                          export DOCKER_REPO=quay.io/${quay_push_org}; \
+                          make --no-builtin-rules all; \
+                       ")
+                  }
+                  */
+                  stage('containerize') {
+                      kubesh(" \
+                          cd _containerize; \
                           docker version; \
                           export DOCKER_REPO=quay.io/${quay_push_org}; \
                           make --no-builtin-rules all; \

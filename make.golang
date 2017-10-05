@@ -23,6 +23,7 @@ IMAGE_NAME := crashbackend
 # avoid checking etc the vendor dir
 #
 NOVENDOR := $(shell glide novendor)
+
 PKGS := "./cmd ./backendproxy"
 #
 # find the certs.  use the first location found
@@ -88,6 +89,7 @@ cover-runner: repo-warning-in
 
 view-debug:
 	echo "PKGS $(PKGS)"
+	echo "NOVENDOR $(NOVENDOR)"
 
 view-all-coverage:
 	echo "mode: count" > coverage-all.out

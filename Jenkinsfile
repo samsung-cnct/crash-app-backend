@@ -9,6 +9,8 @@
 github_org             = "oneilcin"
 quay_org               = "samsung_cnct"
 quay_push_org          = "samsung_cnct"
+image_name             = "crashbackend"
+image_tag              = "0.0.2"
 //quay_push_org          = "samsung_cnct"
 golang_project_name    = "crash-app-backend"
 golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"
@@ -113,11 +115,20 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // NOTE: the docker CLI client should still be in our env.
+                  /*
                   stage('push') {
                       kubesh(" \
                           docker version; \
                           export DOCKER_REPO=quay.io/${quay_push_org}; \
                           make --no-builtin-rules push; \
+                       ")
+                  }
+                  */
+                  stage('push') {
+                      kubesh(" \
+                          docker version; \
+                          export DOCKER_REPO=quay.io/${quay_push_org}; \
+                          docker push quay.io/${quay_push_org}/${image_name}:${image_tag}; \
                        ")
                   }
 //            stage('Publish') {

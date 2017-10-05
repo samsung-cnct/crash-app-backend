@@ -54,6 +54,23 @@ podTemplate(label: "crash-app-backend", containers: [
                           make --no-builtin-rules --file make.golang vet lint; \
                        ")
                   }
+                  stage('lint') {
+                      echo WORKSPACE
+                      echo pwd()
+                      kubesh(" \
+                          whoami; \
+                          df -h;  \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          env|sort; \
+                          echo \"shell var \$GOPATH\"; \
+                          cd crash-app-backend; \
+                          echo \"=== go env ===\"; \
+                          go env; \
+                          make --version; \
+                          make --no-builtin-rules --file make.golang lint; \
+                       ")
+                  }
                   // In golang we Unit test before we build the complete app
                   stage('unit-test') {
                       kubesh(" \

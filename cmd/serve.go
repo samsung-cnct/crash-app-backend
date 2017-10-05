@@ -59,7 +59,7 @@ func init() {
 	serveCmd.PersistentFlags().StringVarP(&Target, "target", "t", "", "The target reverse proxy URL will be set to this.")
 	serveCmd.Flags().IntVarP(&klogMax, "logmax", "", 2000000, "Maximum characters for validating KrakenLog string size.")
 	serveCmd.Flags().IntVarP(&ktaskMax, "taskmax", "", 400, "Maximum characters for validating KrakenTask string size.")
-	serveCmd.Flags().IntVarP(&rateLimitPerMin, "ratelimit", "", 10, "Rate Limit Per Minute Per Source IP")
+	serveCmd.Flags().IntVarP(&rateLimitPerMin, "ratelimit", "", 60, "Rate Limit Per Minute Per Handler")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	//	serveCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

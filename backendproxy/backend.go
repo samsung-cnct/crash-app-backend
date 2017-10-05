@@ -11,7 +11,10 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"time"
 
+	"github.com/didip/tollbooth"
+	"github.com/didip/tollbooth/limiter"
 	"github.com/gorilla/mux"
 )
 
@@ -28,7 +31,7 @@ var target = "http://google.com"
 var remote *url.URL
 var maxCharsKrakenLog = 2000000
 var maxCharsFailedTask = 400
-var rateLimit = 10
+var rateLimit = 60
 
 // CrashAppMessage is the expected json from Crash App
 type CrashAppMessage struct {
@@ -44,7 +47,6 @@ func (t CrashAppMessage) Validate(path string) (bool, error) {
 		if t.Date == "" {
 			return false, errors.New("Invalid CrashApp data found, Expected date")
 		}
-		// validate Date
 		reDate := regexp.MustCompile(`^2[0-9]{3}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z`)
 		if !reDate.MatchString(t.Date) {
 			return false, errors.New("Invalid CrashApp data found, Invalid date format")
@@ -85,7 +87,6 @@ func handlerHealthCheck(w http.ResponseWriter, req *http.Request) {
 
 // HandlerCrashAppValidation to handle CrashAppMessage
 func HandlerCrashAppValidation(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("in HandlerCrashAppValidation")
 	if r.Body == nil {
 		http.Error(w, "Please send a request body", http.StatusBadRequest)
 		return
@@ -131,11 +132,12 @@ func InitConfig(t string, klogmax int, ktaskmax int, ratelimit int) {
 }
 
 func handleRequests() {
-
 	router := mux.NewRouter()
-	router.HandleFunc(esIndex, HandlerCrashAppValidation).Methods("POST")
-	router.HandleFunc(esIndexOld, HandlerCrashAppValidation).Methods("POST")
-	router.HandleFunc("/healthcheck", handlerHealthCheck).Methods("GET")
+
+	router.Handle(esIndexOld, tollbooth.LimitFuncHandler(tollbooth.NewLimiter(int64(rateLimit), time.Minute, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour}), HandlerCrashAppValidation)).Methods("POST")
+	router.Handle(esIndex, tollbooth.LimitFuncHandler(tollbooth.NewLimiter(int64(rateLimit), time.Minute, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour}), HandlerCrashAppValidation)).Methods("POST")
+	router.Handle("/healthcheck", tollbooth.LimitFuncHandler(tollbooth.NewLimiter(int64(rateLimit), time.Minute, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour}), handlerHealthCheck)).Methods("GET")
+
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
 

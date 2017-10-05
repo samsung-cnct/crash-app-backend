@@ -62,7 +62,8 @@ function gexample::build::validate_tree {
     #       This example is one extra directory level deeper than
     #       a normal project.  Please adjust accordingly.
     #       e.g. you probably want the following:
-    EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/crash-app-backend"
+    #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/crash-app-backend"
+    EXPECTED_BUILD_PATH="/src/github.com/oneilcin/crash-app-backend"
     #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
 
     if [ "${1}" != "${EXPECTED_BUILD_PATH}" ]; then

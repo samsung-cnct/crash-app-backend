@@ -72,6 +72,7 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // In golang we Unit test before we build the complete app
+                  /*
                   stage('unit-test') {
                       kubesh(" \
                           export GOPATH=${WORKSPACE}; \
@@ -80,24 +81,23 @@ podTemplate(label: "crash-app-backend", containers: [
                           make test-backendproxy; \
                        ")
                   }
-                  /*
-                  stage('unit-test') {
-                      kubesh(" \
-                          export GOPATH=${WORKSPACE}; \
-                          export PATH=\$GOPATH/bin:\$PATH; \
-                          cd crash-app-backend; \
-                          //make --no-builtin-rules --file make.golang test; \
-                          make --no-builtin-rules --file make.golang test-backendproxy; \
-                       ")
-                  }
                   */
                   // build the complete app (make puts the output into the correct location for the container build)
-                  stage('build') {
+                   stage('build') {
                       kubesh(" \
                           export GOPATH=${WORKSPACE}; \
                           export PATH=\$GOPATH/bin:\$PATH; \
                           cd crash-app-backend; \
                           make --no-builtin-rules --file make.golang build-app; \
+                       ")
+                  }
+                  stage('unit-test') {
+                      kubesh(" \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          cd crash-app-backend; \
+                          make --no-builtin-rules --file make.golang test; \
+                          sleep 600; \
                        ")
                   }
                   //

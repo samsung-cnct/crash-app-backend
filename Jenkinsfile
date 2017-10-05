@@ -8,7 +8,7 @@
 // Configuration variables
 github_org             = "oneilcin"
 quay_org               = "samsung_cnct"
-quay_push_org          = "oneilcin"
+quay_push_org          = "samsung_cnct"
 image_name             = "crashbackend"
 image_tag              = "0.0.2"
 //quay_push_org          = "samsung_cnct"
@@ -106,6 +106,7 @@ podTemplate(label: "crash-app-backend", containers: [
                        ")
                   }
                   // NOTE: the docker CLI client should still be in our env.
+                  /*
                   stage('containerize') {
                       kubesh(" \
                           cd _containerize; \
@@ -114,9 +115,11 @@ podTemplate(label: "crash-app-backend", containers: [
                           make --no-builtin-rules all; \
                        ")
                   }
+                  */
                   // NOTE: the docker CLI client should still be in our env.
                   stage('push') {
                       kubesh(" \
+                          cd _containerize; \
                           docker version; \
                           export DOCKER_REPO=quay.io/${quay_push_org}; \
                           make --no-builtin-rules push; \

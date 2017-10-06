@@ -17,7 +17,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/oneilcin/crash-app-backend/backendproxy"
+	"github.com/samsung-cnct/crash-app-backend/backendproxy"
 	"github.com/spf13/cobra"
 )
 

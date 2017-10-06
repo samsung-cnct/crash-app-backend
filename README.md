@@ -27,7 +27,7 @@ Docker
 ## Cobra startup
 The _containerize/Dockerfile shows how the crashbackend server is started.
 
-    crashbackend serve --target http://elasticsearch:9200
+    crashbackend serve --target http://elasticsearch:9200 --ratelimit 60
 
   
 

@@ -6,12 +6,9 @@
 //  NOTE: Keep this version in line with Jenkinsfile.kubesh
 //
 // Configuration variables
-github_org             = "oneilcin"
+github_org             = "samsung-cnct"
 quay_org               = "samsung_cnct"
 quay_push_org          = "samsung_cnct"
-image_name             = "crashbackend"
-image_tag              = "0.0.2"
-//quay_push_org          = "samsung_cnct"
 golang_project_name    = "crash-app-backend"
 golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"
 
@@ -123,13 +120,6 @@ podTemplate(label: "crash-app-backend", containers: [
                           make --no-builtin-rules push; \
                        ")
                   }
-//                  stage('push') {
-//                      kubesh(" \
-//                          docker version; \
-//                          export DOCKER_REPO=quay.io/${quay_push_org}; \
-//                          docker push quay.io/${quay_push_org}/${image_name}:${image_tag}; \
-//                       ")
-//                  }
 //            stage('Publish') {
 //              if (env.BRANCH_NAME == "master" && git_uri.contains(github_org)) {
 //                kubesh "docker tag k2-tools:${env.JOB_BASE_NAME}.${env.BUILD_ID} quay.io/${quay_org}/k2-tools:latest"

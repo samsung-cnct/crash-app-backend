@@ -62,8 +62,7 @@ function gexample::build::validate_tree {
     #       This example is one extra directory level deeper than
     #       a normal project.  Please adjust accordingly.
     #       e.g. you probably want the following:
-    #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/crash-app-backend"
-    EXPECTED_BUILD_PATH="/src/github.com/oneilcin/crash-app-backend"
+    EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/crash-app-backend"
     #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
 
     if [ "${1}" != "${EXPECTED_BUILD_PATH}" ]; then
@@ -98,11 +97,14 @@ git_dir=$( cd "$( dirname "${my_dir}/.." )" && pwd)
 #
 # ATTENTION!
 #
-# NOTE: these need to get back to the ./src directory.
-#       This example is one extra directory level deeper than
+# NOTE: The go_dir needs to get to the directory before "src",
+#       to your GOPATH.  If you installed go and go tools (glide)
+#       on your mac, this GOPATH should be a different path so
+#       that linux go tools will work, and to keep linux binaries
+#       separate from OSX binaries.
+#       The example-project is one extra directory level deeper than
 #       a normal project.  Please adjust accordingly.
 #       e.g. you probably want the following:
-#go_dir=$( cd "$( dirname "${my_dir}/../../.." )" && pwd)
 go_dir=$( cd "$( dirname "${my_dir}/../../../../.." )" && pwd)
 #go_dir=$( cd "$( dirname "${my_dir}/../../../../../.." )" && pwd)
 build_dir=$( echo ${my_dir#$go_dir})

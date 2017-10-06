@@ -18,7 +18,6 @@ podTemplate(label: "crash-app-backend", containers: [
     containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
   ], volumes: [
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-    hostPathVolume(hostPath: '/var/lib/docker/scratch', mountPath: '/mnt/scratch'),
     // The Following is needed to push to quay
     secretVolume(mountPath: '/home/jenkins/.docker/', secretName: 'samsung-cnct-quay-robot-dockercfg')
   ]) {
@@ -120,17 +119,9 @@ podTemplate(label: "crash-app-backend", containers: [
                           make --no-builtin-rules push; \
                        ")
                   }
-//            stage('Publish') {
-//              if (env.BRANCH_NAME == "master" && git_uri.contains(github_org)) {
-//                kubesh "docker tag k2-tools:${env.JOB_BASE_NAME}.${env.BUILD_ID} quay.io/${quay_org}/k2-tools:latest"
-//                kubesh "docker push quay.io/${quay_org}/k2-tools:latest"
-//              } else {
-//                echo "Not pushing to docker repo:\n    BRANCH_NAME='${env.BRANCH_NAME}'\n    git_uri='${git_uri}'"
-//              }
-//            }
-          }
-       }
-    }
+              }
+        }
+    } 
   }
 
 def kubesh(command) {

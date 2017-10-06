@@ -3,4 +3,5 @@
 
 # These owners will be the default owners for everything in the repo.
 *       @samsung-cnct/kraken-reviewers
-@oneilcin
+cmd/* @oneilcin
+backendproxy/* @oneilcin

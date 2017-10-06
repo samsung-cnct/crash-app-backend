@@ -105,8 +105,12 @@ func HandlerCrashAppValidation(w http.ResponseWriter, r *http.Request) {
 	}
 	validated, verr := msg.Validate(r.URL.Path)
 	if !validated {
-		fmt.Println(verr)
-		http.Error(w, verr.Error(), http.StatusBadRequest)
+		if verr != nil {
+			fmt.Println(verr)
+			http.Error(w, verr.Error(), http.StatusBadRequest)
+		} else {
+			http.Error(w, "Validation Error", http.StatusBadRequest)
+		}
 		return
 	}
 

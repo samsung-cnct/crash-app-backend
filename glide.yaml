@@ -1,0 +1,9 @@
+package: github.com/samsung-cnct/crash-app-backend
+import:
+- package: github.com/gorilla/mux
+  version: ^1.5.0
+- package: github.com/spf13/cobra
+  subpackages:
+  - cobra
+- package: github.com/didip/tollbooth
+  version: ^2.2.0

@@ -1,0 +1,32 @@
+hash: bee6f185311c68f48f4854dd02e1574b0561ad6dcd02583be339df61537baabd
+updated: 2017-09-27T10:08:32.409467741-06:00
+imports:
+- name: github.com/didip/tollbooth
+  version: 8a5832d289e4375d2fc658ed42ef08975b66dceb
+  subpackages:
+  - errors
+  - libstring
+  - limiter
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 24fca303ac6da784b9e8269f724ddeb0b2eea5e7
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/patrickmn/go-cache
+  version: a3647f8e31d79543b2d0f0ae2fe5c379d72cedc0
+- name: github.com/spf13/cobra
+  version: b78744579491c1ceeaaa3b40205e56b0591b93a3
+  subpackages:
+  - cobra
+- name: github.com/spf13/pflag
+  version: 7aff26db30c1be810f9de5038ec5ef96ac41fd7c
+- name: golang.org/x/net
+  version: 0a9397675ba34b2845f758fe3cd68828369c6517
+  subpackages:
+  - context
+- name: golang.org/x/time
+  version: 6dc17368e09b0e8634d71cac8168d853e869a0c7
+  subpackages:
+  - rate
+testImports: []

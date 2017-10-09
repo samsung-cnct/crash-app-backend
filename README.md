@@ -1,8 +1,8 @@
 # Crash Application Backend
 
-This is a reverse proxy validator that validates input from the k2 crash application destined for elasticsearch.
+This is a reverse proxy validator that validates input from the kraken crash application destined for elasticsearch.
 
-The crashbackend image is running in the Kubernetes cluster along with elasticsearch.
+The crashbackend image is running in the common tools kubernetes production cluster along with elasticsearch.
 
 ## Prerequisites
 Docker

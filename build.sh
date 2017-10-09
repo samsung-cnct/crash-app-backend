@@ -97,8 +97,8 @@ git_dir=$( cd "$( dirname "${my_dir}/.." )" && pwd)
 #
 # ATTENTION!
 #
-# NOTE: The go_dir needs to get to the directory before "src",
-#       to your GOPATH.  If you installed go and go tools (glide)
+# NOTE: The go_dir needs to get back to your GOPATH, which is the 
+#       directory before "src".  If you installed go and go tools (glide)
 #       on your mac, this GOPATH should be a different path so
 #       that linux go tools will work, and to keep linux binaries
 #       separate from OSX binaries.

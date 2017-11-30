@@ -1,0 +1,78 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKER_DRIVER: overlay2
+  IMAGE_DEVL_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID
+  IMAGE_PROD_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  REGISTRY: quay.io
+  IMAGE_NAME: crashbackend-container
+  REGISTRY_USER: your_org # we set this to override to samsung_cnct in gitlab Group Variables
+  ROBOT_ACCOUNT: crashbackend_container_rw
+  # Create a Gitlab Secret Variable called REGISTRY_PASSWORD and assign it the value of the registry robot docker login password.
+  # DO NOT PASTE THIS PASSWORD HERE.
+
+before_script:
+  - docker info
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+stages:
+  - build
+  - test
+  - publish
+
+build-branch:
+  stage: build
+  only:
+    - branches
+  except:
+    - master
+  script:
+  - docker build --force-rm --pull -t $IMAGE_DEVL_NAME .
+  - docker push $IMAGE_DEVL_NAME
+
+build-master:
+  stage: build
+  only:
+    - master
+    - tags
+  script:
+  - docker build -t $IMAGE_PROD_NAME .
+  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/_containerize:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_PROD_NAME
+  - cd $CI_PROJECT_DIR/_containerize
+  - pwd
+  - ls -alt
+  # build the production container using the output of the golang-build-container
+  - docker build -t $IMAGE_PROD_NAME .
+  - docker push $IMAGE_PROD_NAME
+
+test:
+  stage: test
+  script:
+  - docker pull $IMAGE_DEVL_NAME
+  - docker run $IMAGE_DEVL_NAME go test -v ./backendproxy/... 
+
+publish-master:
+  stage: publish
+  only:
+    - master
+  script:
+  - docker pull $IMAGE_PROD_NAME
+  - docker login ${REGISTRY} -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD}
+  # Any merge to master (i.e. a successful CI pass) will be tagged and pushed as latest
+  - docker tag ${IMAGE_PROD_NAME} ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
+  - docker push ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
+
+publish-version-tag:
+  stage: publish
+  only:
+    - /v[0-9]+\.[0-9]+(\.[0-9]+[a-z]?)?/
+  script:
+  - docker pull $IMAGE_PROD_NAME
+  - docker login ${REGISTRY} -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD}
+  # A tag push to master will be pushed to Quay with that tag
+  - docker tag ${IMAGE_PROD_NAME} ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:$CI_COMMIT_TAG
+  - docker push ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:$CI_COMMIT_TAG

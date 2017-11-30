@@ -1,4 +1,5 @@
 # Crash Application Backend
+[![pipeline status](https://git.cnct.io/common-tools/samsung-cnct_crash-app-backend/badges/master/pipeline.svg)](https://git.cnct.io/common-tools/samsung-cnct_crash-app-backend/commits/master)
 
 This is a reverse proxy validator that validates input from the kraken crash application destined for elasticsearch.
 

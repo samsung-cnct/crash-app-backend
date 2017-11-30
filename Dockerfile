@@ -9,7 +9,8 @@ RUN apt-get -qq update && apt-get install -y -q build-essential
 WORKDIR ${PACKAGE_PATH}
 COPY . ${PACKAGE_PATH}
 
-RUN make --no-builtin-rules --file make.golang build-app 
-COPY    ./_containerize/crashbackend-linux /crashbackend
+RUN glide up
+RUN make --no-builtin-rules --file make.golang build-app
+RUN ls ./_containerize 
 EXPOSE  8081
-CMD     /crashbackend serve --target $ELASTICSEARCH_TARGET_URL --ratelimit $RATE_LIMIT_PER_MINUTE
+CMD  ./_containerize/crashbackend-linux serve --target $ELASTICSEARCH_TARGET_URL --ratelimit $RATE_LIMIT_PER_MINUTE

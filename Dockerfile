@@ -4,7 +4,7 @@ ENV PACKAGE_PATH "/go/src/github.com/samsung-cnct/crash-app-backend"
 ENV     ELASTICSEARCH_TARGET_URL=http://elasticsearch:9200
 ENV     RATE_LIMIT_PER_MINUTE=60
 
-RUN apt-get -qq update && apt-get install -y -q build-essential && apt-get install file
+RUN apt-get -qq update && apt-get install -y -q build-essential
 
 WORKDIR ${PACKAGE_PATH}
 COPY . ${PACKAGE_PATH}

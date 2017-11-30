@@ -50,7 +50,8 @@ build-master:
     - master
     - tags
   script:
-  - docker pull $IMAGE_DEVL_NAME
+  - docker build --force-rm --pull -t $IMAGE_DEVL_NAME .
+  - docker push $IMAGE_DEVL_NAME
   # create the dev container
   - docker create --name build-cont $IMAGE_DEVL_NAME
   - docker cp build-cont:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize/crashbackend-linux $CI_PROJECT_DIR/_containerize

@@ -33,6 +33,16 @@ build-branch:
   script:
   - docker build --force-rm --pull -t $IMAGE_DEVL_NAME .
   - docker push $IMAGE_DEVL_NAME
+  # create the dev container
+  - docker create --name build-cont $IMAGE_DEVL_NAME 
+  - docker cp build-cont:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize/crashbackend-linux $CI_PROJECT_DIR/_containerize
+  - cd $CI_PROJECT_DIR/_containerize
+  - echo "should be in _containerize dir"
+  - pwd
+  - ls -alt
+  # build the production container using the output of the golang-build-container
+  - docker build -t $IMAGE_PROD_NAME .
+  - docker push $IMAGE_PROD_NAME
 
 build-master:
   stage: build
@@ -40,9 +50,12 @@ build-master:
     - master
     - tags
   script:
-  - docker build -t $IMAGE_PROD_NAME .
-  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/_containerize:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_PROD_NAME
+  - docker pull $IMAGE_DEVL_NAME
+  # create the dev container
+  - docker create --name build-cont $IMAGE_DEVL_NAME
+  - docker cp build-cont:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize/crashbackend-linux $CI_PROJECT_DIR/_containerize
   - cd $CI_PROJECT_DIR/_containerize
+  - echo "should be in _containerize dir"
   - pwd
   - ls -alt
   # build the production container using the output of the golang-build-container

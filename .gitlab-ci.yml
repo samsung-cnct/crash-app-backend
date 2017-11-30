@@ -41,6 +41,12 @@ build-master:
     - tags
   script:
   - docker build -t $IMAGE_PROD_NAME .
+  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/_containerize:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_PROD_NAME
+  - cd $CI_PROJECT_DIR/_containerize
+  - pwd
+  - ls -alt
+  # build the production container using the output of the golang-build-container
+  - docker build -t $IMAGE_PROD_NAME .
   - docker push $IMAGE_PROD_NAME
 
 test:
@@ -55,15 +61,9 @@ publish-master:
     - master
   script:
   - docker pull $IMAGE_PROD_NAME
-  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/_containerize:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_PROD_NAME
-  - cd $CI_PROJECT_DIR/_containerize
-  - pwd
-  - ls -alt
-  # build the production container using the output of the golang-build-container
-  - docker build -t $IMAGE_PROD_NAME .
   - docker login ${REGISTRY} -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD}
   # Any merge to master (i.e. a successful CI pass) will be tagged and pushed as latest
-  - docker tag crashbackend-linux ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
+  - docker tag ${IMAGE_PROD_NAME} ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
   - docker push ${REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
 
 publish-version-tag:

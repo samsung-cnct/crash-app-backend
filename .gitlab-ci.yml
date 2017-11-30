@@ -47,7 +47,7 @@ test:
   stage: test
   script:
   - docker pull $IMAGE_DEVL_NAME
-  - docker run $IMAGE_DEVL_NAME make test
+  - docker run $IMAGE_DEVL_NAME go test -v ./backendproxy/... 
 
 publish-master:
   stage: publish

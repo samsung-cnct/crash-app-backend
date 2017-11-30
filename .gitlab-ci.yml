@@ -33,7 +33,12 @@ build-branch:
   script:
   - docker build --force-rm --pull -t $IMAGE_DEVL_NAME .
   - docker push $IMAGE_DEVL_NAME
-  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/_containerize:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_DEVL_NAME
+  - ls -alt $CI_PROJECT_DIR/_containerize
+  - mkdir $CI_PROJECT_DIR/artifacts
+  - docker run --rm --name golang-build-container -v $CI_PROJECT_DIR/artifacts:/go/src/github.com/samsung-cnct/crash-app-backend/_containerize $IMAGE_DEVL_NAME
+  - echo "contents of artifacts"
+  - ls -alt $CI_PROJECT_DIR/artifacts
+  - cp $CI_PROJECT_DIR/artifacts/crashbackend* $CI_PROJECT_DIR/_containerize
   - cd $CI_PROJECT_DIR/_containerize
   - echo "should be in _containerize dir"
   - pwd
